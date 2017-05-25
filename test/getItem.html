@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    $.ajax({
+      url: '../json/data1.json',
+      dataType: 'json',
+      data: {param1: 'value1'},
+    })
+    .done(function(data) {
+      console.log("success");
+      var wheel = data;
+      var prizes = wheel.prizes;
+      var rnd = Math.random();
+      var item = getItem(rnd, prizes);
+      function getItem (rnd, prizes) {
+        var arrProb = {};// 统计有概率的奖项
+        var prize = null;
+
+        for(var i=0; i<prizes.length; i++) {
+          prize = prizes[i];
+          if (typeof arrProb[prize.id] === 'undefined') {// 第一次统计到某个奖项
+            arrProb[prize.id] = {
+              pos: [i]
+            };
+            if (typeof prize.prob !== 'undefined' && prize.prob) {
+              arrProb[prize.id].prob = prize.prob;
+            } else {
+              arrProb[prize.id].prob = 0;
+            }
+          } else {
+            arrProb[prize.id].pos.push(i);
+            if (typeof prize.prob !== 'undefined' && prize.prob) {
+              arrProb[prize.id].prob = prize.prob;
+            }
+          }
+        }
+        // 删掉概率为零的
+        for (let key in arrProb) {
+          if (arrProb[key].prob === 0) {
+            delete arrProb[key];
+          }
+        }
+        // 根据随机数选择奖项
+        var latsProb = 0;
+        var yourPrize;
+        var rndPos = null;
+        for (let key in arrProb) {
+          if (rnd >= latsProb && rnd <= arrProb[key].prob + latsProb) {
+            yourPrize = key;
+            // 随机选择该奖的位置
+            let rndIdx = Math.round(Math.random()*(arrProb[key].pos.length-1));
+            rndPos = arrProb[key].pos[rndIdx];
+          }
+          latsProb = arrProb[key].prob + latsProb;
+        }
+        return item;
+      }
+    })
+    .fail(function() {
+      console.log("error");
+    })
+    .always(function() {
+      console.log("complete");
+    });
+
+  </script>
+</body>
+</html>

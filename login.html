@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>信息填写</title>
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link href="https://cdn.bootcss.com/flat-ui/2.3.0/css/flat-ui.min.css" rel="stylesheet"> -->
+  <style>
+    /*body {
+      background: url(img/webwxgetmsgimg.jpg) no-repeat 0px -20px;
+      background-size: cover;
+      -webkit-filter: blur(5px);
+      -moz-filter: blur(5px);
+      -o-filter: blur(5px);
+      -ms-filter: blur(5px);
+      filter: blur(5px);
+    }*/
+    .bg {
+    }
+    .bg-blur {
+      /*float: left;*/
+      /*width: 100%;*/
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      -webkit-filter: blur(5px);
+      -moz-filter: blur(5px);
+      -o-filter: blur(5px);
+      -ms-filter: blur(5px);
+      filter: blur(5px);
+    }
+    .bg-blur img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .bg-blur {
+      max-width: 100%
+    }
+    ::-webkit-input-placeholder {
+      color: #eee!important;
+    }
+    :-moz-placeholder {
+     color: #eee!important;
+    }
+    ::-moz-placeholder {
+     color: #eee!important;
+    }
+    :-ms-input-placeholder {
+     color: #eee!important;
+    }
+    .my-login {
+      position: absolute;
+       top: 0; left: 0; bottom: 0; right: 0;
+      z-index: 1;
+      width: 75%;
+      padding: 10px;
+      padding-top: 50%;
+      margin: auto;
+    }
+    .my-login button {
+      background: transparent;
+      background: orange;
+      opacity: 1!important;
+    }
+    .my-login input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      border-radius: 0px;
+      box-shadow: none;
+      color: #eee;
+      text-indent: 15px;
+    }
+    .error {
+      border-color: #a94442;
+    }
+    #hide {
+      width: 0;
+      height: 0;
+    }
+    #hide img {
+      width: 0px;
+      height: 0px;
+    }
+    .scan {
+      width: 70px;
+      margin: auto;
+      margin-top: 27px;
+    }
+    .scan img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <div class="bg bg-blur"><img src="img/d6a17cce087cc9f6bc71206218e75eaf59b35eeeae387-Y61NQQ_fw658.jpg"></div> -->
+
+  <!-- 背景图 -->
+  <div class="bg bg-blur"><img src="img/webwxgetmsgimg.jpg"></div>
+
+  <div id="hide"><img src="img/beepic20150525.jpg"></div>
+
+  <form class="my-login" id="my-login">
+    <div class="form-group">
+      <input type="text" class="form-control" name="clntname" placeholder="姓名" data-validation="required" data-validation-error-msg="姓名不能为空">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="age" placeholder="年龄" data-validation="number" data-validation-allowing="range[20;55]" data-validation-error-msg="年龄不能为空或格式不正确">
+    </div>
+    <div class="form-group sec-cell">
+      <div class="input-group">
+        <input maxlength="11" type="text" class="form-control" id="cell" name="telno" placeholder="手机" data-validation="custom" data-validation-regexp="^([0-9]{11})$" data-validation-error-msg="手机号格式不正确">
+        <span class="input-group-btn">
+          <button class="btn btn-default" id="verify" type="button">发送验证码</button>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="veriCode" id="veriCode" placeholder="验证码" data-validation="required" data-validation-error-msg="验证码不能为空">
+    </div>
+    <button class="btn btn-default btn-block" id="submit" type="button">提交</button>
+    <div class="scan"><img src="img/tkpc_erweima1.jpg" alt=""></div>
+  </form>
+
+
+
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery-form-validator/2.3.61/jquery.form-validator.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcss.com/flat-ui/2.3.0/js/flat-ui.min.js"></script>
+  <script>
+    // 表单检验
+    $.validate();
+    // $('.bg-blur').css({
+    //   'height': $(window).height() + 'px'
+    // });
+
+    var agntnum = parseUrl().agntnum;
+    console.log(parseUrl());
+    console.log(agntnum);
+
+    // 实时检测手机号格式
+    $('#verify').attr({
+      disabled: 'disabled'
+    });
+    $('#cell').on('input', function () {// 输入时实时检验手机号格式, 输入格式正确才能发送
+      if (!isCellValid($(this).val())) {
+        $('#verify').attr({
+          disabled: 'disabled'
+        });
+      } else {
+        $('#verify').removeAttr('disabled');
+      }
+    });
+
+    // 发送验证码
+    $('#verify').click(function () {
+      var $cell = $('#cell');
+      var cellVal = $cell.val();
+      $.ajax({
+        // url: 'http://taikangsc.com:9080/Tkscwx/servlet/com.base.SendsmsServlet',
+        url: 'http://10.12.1.88/Tkscwx/servlet/com.base.SendsmsServlet',
+        dataType: 'jsonp',
+        data: {
+          telno: cellVal,
+          sendtype: 'hdlzzy'
+        }
+
+      })
+      .done(function(data) {
+        console.log("success");
+        console.log(data);
+        localStorage.vericode = data.smsno;
+        localStorage.telno = $('#cell').val();
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
+      countDown(this, 120);
+    });
+
+    // 提交表单
+    $('#submit').click(function(event) {
+      if (checkVeriCode()) {// 检测验证码
+        if ($('#cell').val() !== localStorage.telno) {
+          alert('需要重新发送验证码！');
+          $('#veriCode').val("");
+          return false;
+        }
+        $.ajax({
+          // url: 'http://taikangsc.com:9080/Tkscwx/servlet/com.base.InsertHdlServlet',
+          url: 'http://10.12.1.88/Tkscwx/servlet/com.base.InsertHdlServlet',
+          dataType: 'jsonp',
+          // data: 'acctid=1' + '&hdl_type=1' + '&agntnum=' + agntnum + '&' + $("#my-login").serialize()
+          // data: encodeURI(encodeURI('acctid=1' + '&hdl_type=1' + '&agntnum=' + agntnum + '&' + $("#my-login").serialize()))
+          data: encodeURI('acctid=1' + '&hdl_type=1' + '&agntnum=' + agntnum + '&' + $("#my-login").serialize())
+        })
+        .done(function(data) {
+          console.log("success");
+          console.log(typeof data.result);
+          console.log(data);
+          var errcode = parseInt(data.result) || 0;
+          localStorage.errcode = errcode;
+          // 返回 result 0 成功  1 手机号已使用 2 意外错误
+          // localStorage.telno = $('#cell').val();
+          if (errcode === 0) {
+            // location.href = 'lucky-draw.html';
+          } else if (errcode === 1) {
+            alert('您已经注册过，不能继续抽奖');
+          } else {
+            alert('对不起，网站出错了！');
+          }
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          console.log("complete");
+        });
+      }
+    });
+
+    /**
+     * 解析 url 的 get 请求，转化成 json 对象
+     * @return json 一个 json 对象，保存了 get 中的字段
+     */
+    function parseUrl() {
+      var obj = {};
+      var arr = location.search.substr(1).split('&');
+      for (var item of arr) {
+        var key = item.split('=')[0];
+        var val = item.split('=')[1]
+        obj[key] = val;
+      }
+      return obj;
+    }
+
+    /**
+     * 检验手机号, 格式正确时解除禁用
+     * @param  number cell 手机号，11 位数字
+     * @return bool   正确返回 true
+     */
+    function isCellValid(cell) {
+      return /^[0-9]{11}$/.test(cell);
+    }
+
+    /**
+     * 验证码检测
+     * @return bool true 表示通过检测
+     */
+    function checkVeriCode() {
+      if (localStorage.vericode !== $('#veriCode').val()) {
+        $('#veriCode').parent().removeClass('has-success').addClass('has-error');
+        $('#veriCode').addClass('error');
+        if ($('#veriCode').next('.form-error').length === 0) {
+          $('#veriCode').after('<span class="help-block form-error" id="wrongCode">验证码不正确或失效</span>');
+        }
+        return false;
+      } else {
+        $('#veriCode').parent().removeClass('has-errer').addClass('has-success');
+        $('#veriCode').removeClass('error');
+        $('#veriCode').next('.form-error').remove();
+        return true;
+      }
+    }
+
+    /**
+     * 禁用按钮一段时间
+     * @param  dom     要禁用的 dom 对象
+     * @param  timeout 禁用的时间，单位：秒
+     */
+    function countDown(dom, timeout) {
+      var $dom = $(dom);
+      // $(this).html('发送验证码(' + timeout + ')');
+      $dom.html(`发送验证码(${timeout})`);// ES 6
+      $dom.attr({
+        disabled: "disabled"
+      });
+      var counting = setInterval(function () {
+        if (timeout === 0) {
+          $dom.html('发送验证码');
+          $dom.removeAttr('disabled');
+          clearInterval(counting);
+          // $('#veriCode').val(localStorage.vericode);
+        } else {
+          console.log(timeout);
+          // $dom.html('发送验证码(' + timeout + ')');
+          $dom.html(`发送验证码(${--timeout})`);// ES 6
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>

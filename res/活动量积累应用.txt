@@ -1,0 +1,20 @@
+短信验证
+http://10.12.1.88/Tkscwx/servlet/com.base.SendsmsServlet?telno=18982024097  
+
+-------------------------------------------------------------
+
+录入上传
+http://10.12.1.88/Tkscwx/servlet/com.base.InsertHdlServlet?telno=18982024097&agntnum=05010196&clntname=%E6%9D%8E%E4%BC%9F&hdl_type=1&age=39&acctid=1
+
+返回result 0 成功  1 手机号已使用 2 意外错误
+
+-------------------------------------------------------------
+抽奖结果上传
+http://10.12.1.88/Tkscwx/servlet/com.base.InsertHdlServlet?telno=18982024097&agntnum=05010196&prize=3&hdl_type=1&acctid=2
+
+返回result 0 成功  1 已抽过奖 2 意外错误
+
+
+hdl_type  1 增员优选数据  2 活动量管理数据   （本次应用为1）
+acctid    1 录入数据存盘  2 抽奖结果存盘
+prize     1 一等奖 2 二等奖 3 三等奖 0 未中奖 9 特等奖

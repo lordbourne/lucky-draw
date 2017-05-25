@@ -1,0 +1,57 @@
+{
+  "prizes": [
+    {
+      "name": "50M流量包",
+      "color": "#FFF4D7"
+    },
+    {
+      "name": "10Q币",
+      "color": "#FFFFFF"
+    },
+    {
+      "name": "谢谢参与",
+      "color": "#F0F4D8"
+    },
+    {
+      "name": "5Q币",
+      "color": "#FFFFFF"
+    },
+    {
+      "name": "10M流量包",
+      "color": "#FFF4D0"
+    },
+    {
+      "name": "20M流量包",
+      "color": "#FFFFFF"
+    },
+    {
+      "name": "10M流量包",
+      "color": "#FFF4D0"
+    },
+    {
+      "name": "20M流量包",
+      "color": "#FFFFFF"
+    },
+    {
+      "name": "20Q币 ",
+      "color": "#FFF4D6"
+    },
+    {
+      "name": "30M流量包",
+      "color": "#FFFFFF"
+    },
+    {
+      "name": "100M流量包",
+      "color": "#FFF4D6"
+    },
+    {
+      "name": "2Q币",
+      "color": "#FFFFFF"
+    }
+  ],
+  "outerRadius": 192,
+  "innerRadius": 68,
+  "textRadius": 155,
+  "startAngle": 0,
+  "bRotate": false
+}

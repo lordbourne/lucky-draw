@@ -1,0 +1,99 @@
+{
+  "prizes": [
+    {
+      "id": "special",
+      "no": 9,
+      "name": "特等奖",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D8"
+    },
+    {
+      "id": "thx",
+      "no": 0,
+      "name": "谢谢参与",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0"
+    },
+    {
+      "id": "first",
+      "no": 1,
+      "name": "一等奖",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/f35ebc3a65274f66.png",
+      "color": "#FFF4D7",
+      "prob": 0.05
+    },
+    {
+      "id": "thx",
+      "no": 0,
+      "name": "谢谢参与",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0"
+    },
+    {
+      "id": "second",
+      "no": 2,
+      "name": "二等奖",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/45c30e535e8a61e3.png",
+      "color": "#FFF4D6"
+    },
+    {
+      "id": "thx",
+      "no": 0,
+      "name": "谢谢参与",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0"
+    },
+    {
+      "id": "second",
+      "no": 2,
+      "name": "二等奖",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/45c30e535e8a61e3.png",
+      "color": "#FFF4D6",
+      "prob": 0.1
+    },
+    {
+      "id": "thx",
+      "no": 0,
+      "name": "谢谢参与",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0"
+    },
+    {
+      "id": "third",
+      "no": 3,
+      "name": "三等奖",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0",
+      "prob": 0.85
+    },
+    {
+      "id": "thx",
+      "no": 0,
+      "name": "谢谢参与",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0"
+    },
+    {
+      "id": "third",
+      "no": 3,
+      "name": "三等奖",
+      "content": "",
+      "thumb": "http://i1.piimg.com/589268/0fe50e0dff34ef71.png",
+      "color": "#FFF4D0"
+    }
+  ],
+  "outerRadius": 192,
+  "innerRadius": 68,
+  "textRadius": 155,
+  "startAngle": 0
+}
