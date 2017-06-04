@@ -9,60 +9,30 @@
 
   <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script>
+  var items = [];
     $.ajax({
-      url: '../json/data1.json',
+      url: '../data/data1.json',
       dataType: 'json',
       data: {param1: 'value1'},
     })
     .done(function(data) {
       console.log("success");
       var wheel = data;
+      // console.log(item);
+      // console.log(getArrProb(prizes));
+      // 产生足够多随机数，统计中奖分布
       var prizes = wheel.prizes;
-      var rnd = Math.random();
-      var item = getItem(rnd, prizes);
-      function getItem (rnd, prizes) {
-        var arrProb = {};// 统计有概率的奖项
-        var prize = null;
+      var item = null;
+      var rnd = null;
 
-        for(var i=0; i<prizes.length; i++) {
-          prize = prizes[i];
-          if (typeof arrProb[prize.id] === 'undefined') {// 第一次统计到某个奖项
-            arrProb[prize.id] = {
-              pos: [i]
-            };
-            if (typeof prize.prob !== 'undefined' && prize.prob) {
-              arrProb[prize.id].prob = prize.prob;
-            } else {
-              arrProb[prize.id].prob = 0;
-            }
-          } else {
-            arrProb[prize.id].pos.push(i);
-            if (typeof prize.prob !== 'undefined' && prize.prob) {
-              arrProb[prize.id].prob = prize.prob;
-            }
-          }
-        }
-        // 删掉概率为零的
-        for (let key in arrProb) {
-          if (arrProb[key].prob === 0) {
-            delete arrProb[key];
-          }
-        }
-        // 根据随机数选择奖项
-        var latsProb = 0;
-        var yourPrize;
-        var rndPos = null;
-        for (let key in arrProb) {
-          if (rnd >= latsProb && rnd <= arrProb[key].prob + latsProb) {
-            yourPrize = key;
-            // 随机选择该奖的位置
-            let rndIdx = Math.round(Math.random()*(arrProb[key].pos.length-1));
-            rndPos = arrProb[key].pos[rndIdx];
-          }
-          latsProb = arrProb[key].prob + latsProb;
-        }
-        return item;
+      for (var i = 0; i < 20000; i++) {
+        rnd = Math.random();
+        item = getItem(rnd, prizes);
+        items.push(item);
       }
+      console.log(items);
+      console.log(items.numOf(3));
+
     })
     .fail(function() {
       console.log("error");
@@ -70,6 +40,66 @@
     .always(function() {
       console.log("complete");
     });
+
+    function getArrProb(prizes) {
+      var arrProb = {};// 统计有概率的奖项
+      var prize = null;
+
+      for(var i=0; i<prizes.length; i++) {
+        prize = prizes[i];
+        if (typeof arrProb[prize.id] === 'undefined') {// 第一次统计到某个奖项
+          arrProb[prize.id] = {
+            pos: [i]
+          };
+          if (typeof prize.prob !== 'undefined' && prize.prob) {
+            arrProb[prize.id].prob = prize.prob;
+          } else {
+            arrProb[prize.id].prob = 0;
+          }
+        } else {
+          arrProb[prize.id].pos.push(i);
+          if (typeof prize.prob !== 'undefined' && prize.prob) {
+            arrProb[prize.id].prob = prize.prob;
+          }
+        }
+      }
+      // 删掉概率为零的
+      for (let key in arrProb) {
+        if (arrProb[key].prob === 0) {
+          delete arrProb[key];
+        }
+      }
+      return arrProb;
+    }
+
+    function getItem(rnd, prizes) {
+      var arrProb = getArrProb(prizes);
+      // 根据随机数选择奖项
+      var lastProb = 0;
+      var yourPrize;
+      var rndPos = null;
+      for (let key in arrProb) {
+        if (rnd >= lastProb && rnd <= arrProb[key].prob + lastProb) {
+          yourPrize = key;
+          // 随机选择该奖的位置
+          let rndIdx = Math.round(Math.random()*(arrProb[key].pos.length-1));
+          rndPos = arrProb[key].pos[rndIdx];
+        }
+        lastProb = arrProb[key].prob + lastProb;
+      }
+      localStorage.prize = prizes[rndPos].no;
+      return rndPos;
+    }
+
+    Array.prototype.numOf = function(el){
+      var sum = 0;
+      for (var _el of this) {
+        if (_el === el) {
+          sum++;
+        }
+      }
+      return sum;
+    };
 
   </script>
 </body>
